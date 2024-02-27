@@ -1,0 +1,20 @@
+TTL    604800
+@       IN      SOA     cas.local root.cas.local (
+                              1         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+
+;Name Server Information
+@       IN      NS      dns1.cas.local.
+
+;IP address of Name Server
+dns1    IN      A       10.10.10.11
+
+;Reverse lookup for Name Server
+11      IN      PTR     dns1.cas.local.
+
+;PTR Record IP address to HostName
+11      IN      PTR     ldap.cas.local.
+22      IN      PTR     www.cas.local.

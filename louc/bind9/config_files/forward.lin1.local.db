@@ -1,0 +1,17 @@
+TTL    604800
+@       IN      SOA     $NAMESERVER root.$NAMESERVER (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+
+;Name Server Information
+@        IN      NS      $NAMESERVER.
+
+;IP address of Name Server
+dns1     IN      A       $DNSIPADDRESS
+
+;A – Record HostName To Ip Address
+www     IN      A       $WWWIPADDRESS
+ldap    IN      A       $LDAPIPADDRESS

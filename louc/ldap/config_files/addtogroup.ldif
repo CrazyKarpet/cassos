@@ -1,0 +1,24 @@
+dn: cn=Managers,ou=groups,dc=cas,dc=local
+changetype: modify
+add: memberuid
+memberuid: man1
+
+dn: cn=Managers,ou=groups,dc=cas,dc=local
+changetype: modify
+add: memberuid
+memberuid: man2
+
+dn: cn=Ingenieurs,ou=groups,dc=cas,dc=local
+changetype: modify
+add: memberuid
+memberuid: ing1
+
+dn: cn=Ingenieurs,ou=groups,dc=cas,dc=local
+changetype: modify
+add: memberuid
+memberuid: ing2
+
+dn: cn=Devloppeurs,ou=groups,dc=cas,dc=local
+changetype: modify
+add: memberuid
+memberuid: dev1

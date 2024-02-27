@@ -1,0 +1,146 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #695d46;
+}
+
+header {
+    background-color: #FF7F50; /* Orange clair */
+    color: #fff;
+    padding: 20px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+section {
+    padding: 50px;
+}
+
+footer {
+    background-color: #FFA07A; /* Légèrement plus clair que l'orange original */
+    color: #fff;
+    text-align: center;
+    padding: 10px; /* Réduction du padding pour réduire la taille du footer */
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 999; /* Pour s'assurer que le footer reste au-dessus du contenu */
+}
+
+
+
+
+#anim {
+    padding: 20px;
+    border: 2px solid #674ea7; /* Couleur plus vive */
+    border-radius: 10px; /* Plus arrondi */
+    margin-bottom: 30px; /* Espacement supplémentaire en bas */
+    color: #674ea7; /* Couleur du texte principale */
+    background-color: #f7f7f7; /* Fond plus clair */
+    font-family: 'Lobster', cursive; /* Utilisation de la police Lobster */
+    font-size: 1.5em; /* Taille de texte encore plus augmentée */
+}
+
+.animated-info {
+    font-style: italic; /* Style italique pour l'info d'animation */
+    margin-bottom: 15px; /* Espacement en bas */
+    font-size: 1.4em; /* Taille de texte encore plus augmentée */
+}
+
+.concert {
+    margin-top: 20px;
+}
+
+.concert h3 {
+    margin-bottom: 10px;
+    font-size: 1.6em; /* Taille de texte encore plus augmentée */
+}
+
+.concert img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+}
+
+.concert-time {
+    font-weight: bold; /* Mettre en gras */
+    font-size: 1.4em; /* Taille de texte encore plus augmentée */
+}
+
+
+.Titre{
+
+    font-size: 3em;
+}
+
+.SubTitre{
+
+    font-size: 1.5em;
+}
+
+
+
+.link{
+    margin:10px 0;
+  }
+  
+  
+  .box{
+    animation: animName 2s linear infinite;
+    width:80px;
+    height:80px;
+    margin:20px;
+  }
+  
+  @keyframes animName {
+   0%{
+    transform: rotate(360deg);
+      
+     }
+  100%{
+    transform: rotate(0deg);
+     }
+  }
+
+
+
+
+.explosion {
+    position: absolute;
+    margin-top: -100px;
+    width: 100px;
+    height: 100px;
+    background: url("https://purepng.com/public/uploads/large/purepng.com-explosionnaturesmokefireflamewardangerexplosionburnblastburst-961524672225kqu1g.png"); /* Remplacez 'explosion.png' par votre image d'explosion */
+    background-size: cover;
+    opacity: 0;
+    animation: explode 0.5s forwards;
+}
+
+@keyframes explode {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(3);
+        opacity: 0;
+    }
+}

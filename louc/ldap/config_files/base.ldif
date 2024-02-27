@@ -1,0 +1,9 @@
+dn: ou=users,dc=cas,dc=local
+objectClass: organizationalUnit
+objectClass: top
+ou: users
+
+dn: ou=groups,dc=cas,dc=local
+objectClass: organizationalUnit
+objectClass: top
+ou: groups

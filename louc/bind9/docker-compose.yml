@@ -1,0 +1,26 @@
+version: '3'
+ 
+services:
+  bind9:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bind9
+    environment:
+      - BIND9_USER=root
+      - TZ=Europe/Zurich
+    ports:
+      - "53:53"
+      - "53:53/udp"
+    restart: unless-stopped
+    networks:
+      bind9:
+        ipv4_address: 10.10.10.11
+
+networks:
+  bind9:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.10.10.0/24
+          gateway: 10.10.10.1
