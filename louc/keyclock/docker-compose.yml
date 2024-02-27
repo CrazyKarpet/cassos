@@ -1,0 +1,69 @@
+version: '3.9'
+services:
+  ldap:
+    build:
+      context: ../ldap
+      dockerfile: Dockerfile
+    container_name: ldap-server
+    hostname: ldap.cas.local
+    environment:
+        - LDAP_ORGANISATION=cas
+        - LDAP_DOMAIN=cas.local
+        - "LDAP_BASE_DN=dc=cas,dc=local"
+        - LDAP_ADMIN_PASSWORD=password
+#    env_file:
+#        - .env
+    ports:
+        - 389:389
+        - 636:636
+    volumes:
+      - "./config_files/base.ldif:/container/service/slapd/assets/config/bootstrap/ldif/base.ldif"
+      - "./config_files/users.ldif:/container/service/slapd/assets/config/bootstrap/ldif/users.ldif"
+      - "./config_files/groups.ldif:/container/service/slapd/assets/config/bootstrap/ldif/groups.ldif"
+#      - "./config_files/addtogroup.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/addtogroup.ldif"
+
+    command:  "/bin/sh -c '/container/tool/run --copy-service --loglevel debug'"
+#      - "ldappasswd -H ldap://localhost -s 'password' -D \"cn=admin,dc=cas,dc=local\" -x \"uid=man1,ou=users,dc=cas,dc=local\" -w password"
+    networks:
+      - local-keycloak
+  postgres:
+    image: postgres
+    restart: unless-stopped
+    env_file:
+        - .env
+    environment:
+      POSTGRES_DB: ${POSTGRESQL_DB}
+      POSTGRES_USER: ${POSTGRESQL_USER}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASS}
+    networks:
+      - local-keycloak
+  keycloak:
+    depends_on:
+      - postgres
+    image: quay.io/keycloak/keycloak
+    container_name: local_keycloak
+    command: start-dev
+    env_file:
+        - .env
+    environment:
+      KC_DB: postgres
+      KC_DB_URL_HOST: postgres
+      KC_DB_URL_DATABASE: ${POSTGRESQL_USER}
+      KC_DB_PASSWORD: ${POSTGRESQL_PASS}
+      KC_DB_USERNAME: ${POSTGRESQL_USER}
+      KC_DB_SCHEMA: public
+#      DB_VENDOR: postgres
+#      DB_ADDR: postgres
+#      DB_DATABASE: ${POSTGRESQL_DB}
+#      DB_USER: ${POSTGRESQL_USER}
+#      DB_PASSWORD: ${POSTGRESQL_PASS}
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin  
+    ports:
+      - "28080:8080"
+    restart: unless-stopped
+    networks:
+      - local-keycloak
+
+networks:
+  local-keycloak:

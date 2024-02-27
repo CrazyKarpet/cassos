@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  ldap:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ldap-server
+    hostname: ldap.cas.local
+    environment:
+        - LDAP_ORGANISATION=cas
+        - LDAP_DOMAIN=cas.local
+        - "LDAP_BASE_DN=dc=cas,dc=local"
+        - LDAP_ADMIN_PASSWORD=password
+
+#    env_file:
+#        - .env
+    ports:
+        - 389:389
+        - 636:636
+    volumes:
+      - "./config_files/base.ldif:/container/service/slapd/assets/config/bootstrap/ldif/base.ldif"
+      - "./config_files/users.ldif:/container/service/slapd/assets/config/bootstrap/ldif/users.ldif"
+      - "./config_files/groups.ldif:/container/service/slapd/assets/config/bootstrap/ldif/groups.ldif"
+#      - "./config_files/addtogroup.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/addtogroup.ldif"
+
+    command:  "/bin/sh -c '/container/tool/run --copy-service --loglevel debug'"
+#      - "ldappasswd -H ldap://localhost -s 'password' -D \"cn=admin,dc=cas,dc=local\" -x \"uid=man1,ou=users,dc=cas,dc=local\" -w password"
+
+    networks:
+      - local-keycloak
+
+networks:
+  local-keycloak:

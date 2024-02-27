@@ -1,0 +1,14 @@
+dn: cn=Managers,ou=groups,dc=cas,dc=local
+objectClass: top
+objectClass: posixGroup
+gidNumber: 20000
+
+dn: cn=Ingenieurs,ou=groups,dc=cas,dc=local
+objectClass: top
+objectClass: posixGroup
+gidNumber: 20010
+
+dn: cn=Devloppeurs,ou=groups,dc=cas,dc=local
+objectClass: top
+objectClass: posixGroup
+gidNumber: 20020

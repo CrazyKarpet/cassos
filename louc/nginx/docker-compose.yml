@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  proxy:
+    image: "nginx:latest"
+    container_name: "proxy"
+    restart: always
+    networks:
+      lan:
+        ipv4_address: 192.168.10.50
+      wan:
+        ipv4_address: 192.168.20.10
+    volumes:
+      - ./src/:/etc/nginx/conf.d/
+    ports:
+      - 8080:8080
+
+networks:
+  lan:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.10.0/24
+          gateway: 192.168.10.1
+  wan:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.20.0/24
+          gateway: 192.168.20.1
