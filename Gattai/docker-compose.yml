@@ -1,0 +1,135 @@
+version: '3'
+services:
+  db_wordpress:
+    image: mysql:latest
+    container_name: db_wordpress
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    volumes: 
+      - 'db_wordpress:/var/lib/mysql'
+    networks:
+      - app-network
+
+  db_moodle:
+    image: docker.io/bitnami/mariadb:latest
+    container_name: db_moodle
+    environment:
+      - MARIADB_ROOT_PASSWORD='Pa$$w0rd'
+      - MARIADB_USER=moodle
+      - MARIADB_PASSWORD=moodle
+      - MARIADB_DATABASE=moodle
+      - MARIADB_CHARACTER_SET=utf8mb4
+      - MARIADB_COLLATE=utf8mb4_unicode_ci
+    volumes:
+      - 'db_moodle:/bitnami/mariadb'
+    networks:
+      - app-network
+
+  openldap:
+    image: osixia/openldap:1.5.0
+    command: "--loglevel info"
+    container_name: ldapserver
+    hostname: ldapserver
+    ports:
+      - "389:389"
+      - "636:636"
+    volumes:
+      - ./ldif:/openldap/ldif
+    environment:
+      - LDAP_ORGANISATION=cpnv-cas1
+      - LDAP_DOMAIN=cpnv-cas1.ch
+      - LDAP_ADMIN_USERNAME=admin
+      - LDAP_ADMIN_PASSWORD=pass123
+      - LDAP_CONFIG_PASSWORD=pass123
+      - "LDAP_BASE_DN=dc=cpnv-cas1,dc=ch"
+      - LDAP_READONLY_USER=true
+      - LDAP_READONLY_USER_USERNAME=user-ro
+      - LDAP_READONLY_USER_PASSWORD=pass123
+      - LDAP_SEED_INTERNAL_LDIF_PATH=/openldap/ldif
+    networks:
+      - app-network
+
+  phpldapadmin:
+    image: osixia/phpldapadmin:0.9.0
+    container_name: phpldapadmin
+    hostname: phpldapadmin
+    ports:
+      - "8010:80"
+    environment:
+      - PHPLDAPADMIN_LDAP_HOSTS=ldapserver
+      - PHPLDAPADMIN_HTTPS=false
+    depends_on:
+      - openldap
+    networks:
+      - app-network
+
+  wordpress:
+    depends_on: 
+      - db_wordpress
+    image: wordpress:latest
+    container_name: wordpress
+    restart: unless-stopped
+    environment:
+      WORDPRESS_DB_HOST: db_wordpress:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - wordpress:/var/www/html
+    ports:
+      - '8000:80'
+    networks:
+      - app-network
+  
+  wordpress-cli:
+    depends_on:
+      - db_wordpress 
+      - wordpress
+    image: wordpress:cli
+    container_name: wordpress-cli
+    user: xfs
+    environment:
+      WORDPRESS_DB_HOST: db_wordpress:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    command: /bin/sh -c 'sleep 20; wp core install --path="/var/www/html" --url="http://10.0.0.100:8000" --title="Local Wordpress By Docker" --admin_user=admin --admin_password=admin --admin_email=foo@bar.com; wp plugin install miniorange-login-with-eve-online-google-facebook; wp plugin activate miniorange-login-with-eve-online-google-facebook; echo "!! Jai fini !!"'
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - app-network
+
+  moodle:
+    image: docker.io/bitnami/moodle:latest
+    container_name: moodle
+    ports:
+      - '8443:8443'
+      - '8080:8080'
+    environment:
+      - MOODLE_DATABASE_HOST=db_moodle
+      - MOODLE_DATABASE_PORT_NUMBER=3306
+      - MOODLE_DATABASE_USER=moodle
+      - MOODLE_DATABASE_PASSWORD=moodle  
+      - MOODLE_DATABASE_NAME=moodle
+    volumes:
+      - 'moodle:/bitnami/moodle'
+      - 'moodledata:/bitnami/moodledata'
+    depends_on:
+      - db_moodle
+    networks:
+      - app-network
+
+volumes:
+  wordpress:
+  moodle:
+  moodledata:
+  db_wordpress:
+  db_moodle:
+
+networks:
+  app-network:
+    driver: bridge
