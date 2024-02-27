@@ -1,0 +1,43 @@
+version: '3.7'
+services:
+  openldap:
+    image: osixia/openldap:1.5.0
+    command: "--loglevel info"
+    container_name: ldapserver
+    hostname: ldapserver
+    ports:
+      - "389:389"
+      - "636:636"
+    volumes:
+      - ./ldif:/openldap/ldif
+    environment:
+      - LDAP_ORGANISATION=cpnv-cas1
+      - LDAP_DOMAIN=cpnv-cas1.ch
+      - LDAP_ADMIN_USERNAME=admin
+      - LDAP_ADMIN_PASSWORD=pass123
+      - LDAP_CONFIG_PASSWORD=pass123
+      - "LDAP_BASE_DN=dc=cpnv-cas1,dc=ch"
+      - LDAP_READONLY_USER=true
+      - LDAP_READONLY_USER_USERNAME=user-ro
+      - LDAP_READONLY_USER_PASSWORD=pass123
+      - LDAP_SEED_INTERNAL_LDIF_PATH=/openldap/ldif
+    networks:
+      - openldap
+
+  phpldapadmin:
+    image: osixia/phpldapadmin:0.9.0
+    container_name: phpldapadmin
+    hostname: phpldapadmin
+    ports:
+      - "8000:80"
+    environment:
+      - PHPLDAPADMIN_LDAP_HOSTS=ldapserver
+      - PHPLDAPADMIN_HTTPS=false
+    depends_on:
+      - openldap
+    networks:
+      - openldap
+
+networks:
+  openldap:
+    driver: bridge
