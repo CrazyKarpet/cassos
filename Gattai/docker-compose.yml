@@ -137,6 +137,8 @@ services:
     depends_on:
       - wordpress
       - moodle
+    networks:
+      - app-network
   postgres:
     image: postgres
     container_name: postgres
@@ -147,6 +149,8 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
+    networks:
+      - app-network
 
   keycloak:
     depends_on:
@@ -173,6 +177,8 @@ services:
     ports:
       - "28080:8080"
     restart: unless-stopped
+    networks:
+      - app-network
 
 volumes:
   wordpress:
