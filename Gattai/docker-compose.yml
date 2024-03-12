@@ -98,11 +98,7 @@ services:
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: wordpress
       WORDPRESS_DB_NAME: wordpress
-<<<<<<< HEAD
-    command: /bin/sh -c 'sleep 60; wp core install --path="/var/www/html" --url="https://wordpress.cpnv-cas1.ch" --title="Local Wordpress By Docker" --admin_user=admin --admin_password=admin --admin_email=foo@bar.com; wp plugin install miniorange-login-with-eve-online-google-facebook; wp plugin activate miniorange-login-with-eve-online-google-facebook; echo "!! Jai fini !!"'
-=======
     command: /bin/sh -c 'sleep 40; wp core install --path="/var/www/html" --url="https://wordpress.cpnv-cas1.ch/" --title="Local Wordpress By Docker" --admin_user=admin --admin_password=admin --admin_email=foo@bar.com; wp plugin install miniorange-login-with-eve-online-google-facebook; wp plugin activate miniorange-login-with-eve-online-google-facebook; echo "!! Jai fini !!"'
->>>>>>> c0076f1b92be05121e61010f36256f0d02fa59a5
     volumes:
       - wordpress:/var/www/html
     networks:
