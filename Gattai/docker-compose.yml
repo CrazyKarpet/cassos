@@ -172,8 +172,6 @@ services:
 #      DB_PASSWORD: ${POSTGRESQL_PASS}
       KEYCLOAK_VERSION: 13.0.0
       PORT_KEYCLOAK: 8080
-
-
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin  
     ports:
