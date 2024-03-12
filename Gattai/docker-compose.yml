@@ -14,6 +14,7 @@ services:
     networks:
       - app-network
 
+
   db_moodle:
     image: docker.io/bitnami/mariadb:latest
     container_name: db_moodle
@@ -97,7 +98,7 @@ services:
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: wordpress
       WORDPRESS_DB_NAME: wordpress
-    command: /bin/sh -c 'sleep 20; wp core install --path="/var/www/html" --url="https://wordpress.cpnv-cas1.ch" --title="Local Wordpress By Docker" --admin_user=admin --admin_password=admin --admin_email=foo@bar.com; wp plugin install miniorange-login-with-eve-online-google-facebook; wp plugin activate miniorange-login-with-eve-online-google-facebook; echo "!! Jai fini !!"'
+    command: /bin/sh -c 'sleep 40; wp core install --path="/var/www/html" --url="https://wordpress.cpnv-cas1.ch/" --title="Local Wordpress By Docker" --admin_user=admin --admin_password=admin --admin_email=foo@bar.com; wp plugin install miniorange-login-with-eve-online-google-facebook; wp plugin activate miniorange-login-with-eve-online-google-facebook; echo "!! Jai fini !!"'
     volumes:
       - wordpress:/var/www/html
     networks:
@@ -165,11 +166,6 @@ services:
       KC_DB_PASSWORD: keycloak
       KC_DB_USERNAME: keycloak
       KC_DB_SCHEMA: public
-#      DB_VENDOR: postgres
-#      DB_ADDR: postgres
-#      DB_DATABASE: ${POSTGRESQL_DB}
-#      DB_USER: ${POSTGRESQL_USER}
-#      DB_PASSWORD: ${POSTGRESQL_PASS}
       KEYCLOAK_VERSION: 13.0.0
       PORT_KEYCLOAK: 8080
 
@@ -192,4 +188,4 @@ volumes:
 
 networks:
   app-network:
-    driver: bridge
+    # driver: bridge
