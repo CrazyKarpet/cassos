@@ -32,7 +32,7 @@ services:
 
   openldap:
     image: osixia/openldap:1.5.0
-    command: "--loglevel info"
+      #command: "--loglevel info"
     container_name: ldapserver
     hostname: ldapserver
     ports:
@@ -132,14 +132,15 @@ services:
       - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./cert.crt:/etc/ssl/certs/nginx/cert.crt
-      - ./cert.key:/etc/ssl/certs/nginx/cert.key
+      - ./nginx.crt:/etc/ssl/certs/nginx/cert.crt
+      - ./nginx.key:/etc/ssl/certs/nginx/cert.key
       - ./ssl.conf:/etc/nginx/includes/ssl.conf
     depends_on:
       - wordpress
       - moodle
     networks:
       - app-network
+
   postgres:
     image: postgres
     container_name: postgres
@@ -159,6 +160,9 @@ services:
     image: quay.io/keycloak/keycloak
     container_name: local_keycloak
     command: start-dev
+    volumes:
+      - ./keycloak.crt:/opt/keycloak/conf/cert.crt
+      - ./keycloak.key:/opt/keycloak/conf/cert.key
     environment:
       KC_DB: postgres
       KC_DB_URL_HOST: postgres
@@ -167,11 +171,12 @@ services:
       KC_DB_USERNAME: keycloak
       KC_DB_SCHEMA: public
       KEYCLOAK_VERSION: 13.0.0
-      PORT_KEYCLOAK: 8080
+      KC_HTTPS_CERTIFICATE_FILE: /opt/keycloak/conf/cert.crt
+      KC_HTTPS_CERTIFICATE_KEY_FILE: /opt/keycloak/conf/cert.key
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin  
     ports:
-      - "28080:8080"
+      - "28080:8443"
     restart: unless-stopped
     networks:
       - app-network

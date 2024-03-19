@@ -20,7 +20,7 @@ objectClass: top
 cn: user1
 givenname: User1
 sn: Name1
-userpassword: Pa$$w0rd301
+userpassword: Pa$$w0rd
 uid: 1004
 
 dn: cn=user2,ou=People,dc=cpnv-cas1,dc=ch
@@ -31,8 +31,9 @@ objectClass: top
 cn: user2
 givenname: User2
 sn: Name2
-userpassword: Pa$$w0rd302
+userpassword: Pa$$w0rd
 uid: 1005
+
 
 # --- Groups ----------------------------------
 
