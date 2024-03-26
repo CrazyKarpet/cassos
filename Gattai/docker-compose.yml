@@ -1,7 +1,7 @@
 version: '3'
 services:
   db_wordpress:
-    image: mysql:latest
+    image: docker.io/mysql:latest
     container_name: db_wordpress
     restart: unless-stopped
     environment:
@@ -31,7 +31,7 @@ services:
       - app-network
 
   openldap:
-    image: osixia/openldap:1.5.0
+    image: docker.io/osixia/openldap:1.5.0
       #command: "--loglevel info"
     container_name: ldapserver
     hostname: ldapserver
@@ -55,7 +55,7 @@ services:
       - app-network
 
   phpldapadmin:
-    image: osixia/phpldapadmin:0.9.0
+    image: docker.io/osixia/phpldapadmin:0.9.0
     container_name: phpldapadmin
     hostname: phpldapadmin
     ports:
@@ -71,7 +71,7 @@ services:
   wordpress:
     depends_on: 
       - db_wordpress
-    image: wordpress:latest
+    image: docker.io/wordpress:latest
     container_name: wordpress
     restart: unless-stopped
     environment:
@@ -90,7 +90,7 @@ services:
     depends_on:
       - db_wordpress 
       - wordpress
-    image: wordpress:cli
+    image: docker.io/wordpress:cli
     container_name: wordpress-cli
     user: xfs
     environment:
@@ -125,7 +125,7 @@ services:
       - app-network
 
   nginx:
-    image: nginx:latest
+    image: docker.io/nginx:latest
     container_name: nginx
     ports:
       - "80:80"      
@@ -142,7 +142,7 @@ services:
       - app-network
 
   postgres:
-    image: postgres
+    image: docker.io/postgres:latest
     container_name: postgres
     environment:
       POSTGRES_USER: keycloak
@@ -157,7 +157,7 @@ services:
   keycloak:
     depends_on:
       - postgres
-    image: quay.io/keycloak/keycloak
+    image: quay.io/keycloak/keycloak:latest
     container_name: local_keycloak
     command: start-dev
     volumes:
